@@ -28,3 +28,9 @@ button:disabled { opacity: .5; cursor: default; }
 summary { cursor: pointer; color: var(--blue); }
 .file { margin-top: 8px; }
 pre { margin: 8px 0 0; padding: 12px; background: var(--bg); border-radius: 8px; overflow-x: auto; white-space: pre-wrap; font-size: 13px; }
+.concepts { display: grid; gap: 10px; }
+.concept { padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.concept summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: #0f172a; }
+.type { padding: 1px 10px; border-radius: 999px; background: #bfdbfe; color: #1d4ed8; font-size: 12px; font-weight: 600; }
+.path { margin-left: auto; color: var(--muted); font-size: 12px; }
+.tags span { margin-right: 8px; color: var(--blue); font-size: 13px; }

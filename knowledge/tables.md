@@ -1,3 +1,12 @@
+---
+type: Database Schema
+title: Orders and Payment Attempts Tables
+description: SQLite schema for the orders and payment_attempts tables.
+resource: backend/db.py
+tags: [schema, sqlite]
+status: stable
+---
+
 # Tables (DEMO DATA, SQLite)
 
 ## orders
@@ -18,3 +27,5 @@
 | status | TEXT | 'success' or 'failed' |
 | failure_reason | TEXT | NULL when success |
 | payment_method | TEXT | 'card', 'wallet', 'bank_transfer' |
+
+See also: [Metrics](metrics.md) for how these columns are used.

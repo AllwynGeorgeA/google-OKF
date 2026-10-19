@@ -2,7 +2,10 @@
 
 A chat-style assistant that answers "why did sales drop?" using demo data.
 
-Question -> router (TypeSafe Jev, or keyword fallback) -> Markdown knowledge -> CrewAI agent + read-only SQLite tools -> OpenAI -> React. All data is **demo data**.
+Question -> **TypeSafe Jev** router (keyword fallback) -> **Open Knowledge Format (OKF)** knowledge bundle -> CrewAI agent + read-only SQLite tools -> OpenAI -> React. All data is **demo data**.
+
+- **Jev** (TypeSafe) reads the question and picks which OKF concepts are relevant.
+- **OKF** (Google's Open Knowledge Format): `knowledge\` is a bundle of Markdown files with YAML frontmatter (`type`, `title`, `description`, `tags`) linked to each other. The UI shows each concept used.
 
 The UI shows the active router under the title after you click Analyze:
 - `Jev (TypeSafe)` - Jev is connected.

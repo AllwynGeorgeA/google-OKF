@@ -2,6 +2,13 @@ import { useState } from "react";
 
 const money = (n) => "$" + n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 const SUGGESTIONS = ["Why did sales drop today?", "Is the payment failure rate higher than yesterday?", "Which metrics should I check first?"];
+// minimal OKF frontmatter parser: "key: value" lines, tags as [a, b]
+function parseOkf(text) {
+  const m = text.match(/^---\n([\s\S]*?)\n---\n*([\s\S]*)$/);
+  const meta = {};
+  if (m) for (const l of m[1].split("\n")) { const i = l.indexOf(":"); if (i > 0) meta[l.slice(0, i).trim()] = l.slice(i + 1).trim(); }
+  return { meta, body: m ? m[2] : text };
+}
 const delta = (a, b) => (b ? `${a >= b ? "+" : ""}${(((a - b) / b) * 100).toFixed(0)}% vs yesterday` : "");
 
 function Card({ label, value, sub }) {
@@ -47,7 +54,7 @@ export default function App() {
     <main>
       <h1><span className="hl">Sales Drop Assistant</span> 📉</h1>
       <p className="hero">How can I help you today?</p>
-      <p className="badge">Demo data · {data ? data.router : "Router: click Analyze to check"}</p>
+      <p className="badge">Demo data · Knowledge: Open Knowledge Format (OKF) · Router: {data ? data.router : "click Analyze to check"}</p>
 
       {!data && !loading && (
         <div className="suggest">
@@ -82,15 +89,26 @@ export default function App() {
       )}
 
       {data && (
-        <details className="panel">
-          <summary>Selected knowledge files ({Object.keys(data.files).length}) · {data.router}</summary>
-          {Object.entries(data.files).map(([name, text]) => (
-            <details key={name} className="file">
-              <summary>{name}</summary>
-              <pre>{text}</pre>
-            </details>
-          ))}
-        </details>
+        <section className="panel">
+          <h2>OKF knowledge used ({Object.keys(data.files).length} concepts)</h2>
+          <div className="concepts">
+            {Object.entries(data.files).map(([name, text]) => {
+              const { meta, body } = parseOkf(text);
+              return (
+                <details key={name} className="concept">
+                  <summary>
+                    <span className="type">{meta.type || "Concept"}</span>
+                    <strong>{meta.title || name}</strong>
+                    <span className="path">{name}</span>
+                  </summary>
+                  {meta.description && <p className="muted">{meta.description}</p>}
+                  {meta.tags && <p className="tags">{meta.tags.replace(/[\[\]]/g, "").split(",").map((t) => <span key={t}>#{t.trim()}</span>)}</p>}
+                  <pre>{body}</pre>
+                </details>
+              );
+            })}
+          </div>
+        </section>
       )}
 
       <div className="ask">
