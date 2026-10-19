@@ -54,7 +54,10 @@ export default function App() {
     <main>
       <h1><span className="hl">Sales Drop Assistant</span> 📉</h1>
       <p className="hero">How can I help you today?</p>
-      <p className="badge">Demo data · Knowledge: Open Knowledge Format (OKF) · Router: {data ? data.router : "click Analyze to check"}</p>
+      <p className="badge">
+        <b>🧭 Routed by Jev (TypeSafe)</b> · <b>📚 Knowledge: OKF</b> · 🤖 OpenAI agent · Demo data
+        {data && <> · Router status: <b>{data.router}</b></>}
+      </p>
 
       {!data && !loading && (
         <div className="suggest">
@@ -91,6 +94,7 @@ export default function App() {
       {data && (
         <section className="panel">
           <h2>OKF knowledge used ({Object.keys(data.files).length} concepts)</h2>
+          <p className="muted">🧭 {data.router} chose these concepts for your question.</p>
           <div className="concepts">
             {Object.entries(data.files).map(([name, text]) => {
               const { meta, body } = parseOkf(text);
